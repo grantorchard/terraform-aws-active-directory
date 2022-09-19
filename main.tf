@@ -47,7 +47,7 @@ resource "aws_security_group" "rdp_ingress" {
 
 resource "aws_security_group_rule" "permit_rdp_ingress" {
   protocol          = "tcp"
-  security_group_id = aws_security_group.this.id
+  security_group_id = aws_security_group.rdp_ingress.id
 	cidr_blocks       = ["27.32.248.192/32"]
   from_port         = 3389
   to_port           = 3389
@@ -61,7 +61,7 @@ resource "aws_security_group" "egress" {
 
 resource "aws_security_group_rule" "permit_egress" {
   protocol          = "tcp"
-  security_group_id = aws_security_group.egress.id
+  source_security_group_id = aws_security_group.egress.id
   from_port         = -1
   to_port           = -1
   type              = "egress"
