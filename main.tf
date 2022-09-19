@@ -40,18 +40,31 @@ data "vault_generic_secret" "this" {
 # 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
 # }
 
-resource "aws_security_group" "this" {
+resource "aws_security_group" "rdp_ingress" {
 	name        = "rdp_ingress"
   vpc_id      = local.vpc_id
 }
 
-resource "aws_security_group_rule" "allow_serf_udp_ingress" {
+resource "aws_security_group_rule" "permit_rdp_ingress" {
   protocol          = "tcp"
   security_group_id = aws_security_group.this.id
 	cidr_blocks       = ["27.32.248.192/32"]
   from_port         = 3389
   to_port           = 3389
   type              = "ingress"
+}
+
+resource "aws_security_group" "egress" {
+	name        = "egress"
+  vpc_id      = local.vpc_id
+}
+
+resource "aws_security_group_rule" "permit_egress" {
+  protocol          = "tcp"
+  security_group_id = aws_security_group.egress.id
+  from_port         = -1
+  to_port           = -1
+  type              = "egress"
 }
 
 resource "aws_instance" "this" {
@@ -63,11 +76,9 @@ resource "aws_instance" "this" {
 	}
 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
 	security_groups = [
-		aws_security_group.this.id
+		aws_security_group.rdp_ingress.id
+		aws_security_group.egress.id
 	]
 	associate_public_ip_address = true
 }
-
-
-
 
