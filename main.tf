@@ -57,12 +57,13 @@ resource "aws_security_group_rule" "allow_serf_udp_ingress" {
 resource "aws_instance" "this" {
 	ami = "ami-085cd86733cd29a21"
 	key_name = "go-rsa"
-
-	name = "ad_manager"
+	tags = {
+		Name = "ad-stuff"
+	}
 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
-
-	security_group_id = aws_security_group.this.id
-
+	security_groups = [
+		aws_security_group.this.id
+	]
 	associate_public_ip_address = true
 }
 
