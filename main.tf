@@ -13,7 +13,7 @@ resource "aws_directory_service_directory" "this" {
   name     = "go.local"
   password = data.vault_generic_secret.this.data["password"]
   edition  = "Standard"
-  type     = "MicrosoftAD"
+  type     = "SimpleAD"
 
   vpc_settings {
     vpc_id     = data.terraform_remote_state.aws-core.outputs.vpc_id
