@@ -76,7 +76,7 @@ resource "aws_instance" "this" {
 	}
 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
 	security_groups = [
-		aws_security_group.rdp_ingress.id
+		aws_security_group.rdp_ingress.id,
 		aws_security_group.egress.id
 	]
 	associate_public_ip_address = true
