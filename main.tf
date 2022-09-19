@@ -17,9 +17,7 @@ resource "aws_directory_service_directory" "this" {
 
   vpc_settings {
     vpc_id     = data.terraform_remote_state.aws-core.outputs.vpc_id
-    subnet_ids = [
-			data.terraform_remote_state.aws-core.outputs.public_subnets
-			]
+    subnet_ids = data.terraform_remote_state.aws-core.outputs.public_subnets
   }
 }
 
