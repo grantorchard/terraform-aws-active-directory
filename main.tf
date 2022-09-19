@@ -32,7 +32,7 @@ module "ec2-instance" {
   version = "4.1.4"
 
 	ami = "ami-085cd86733cd29a21"
-	key_pair = "go"
+	key_name = "go"
 
 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
 }
