@@ -56,6 +56,7 @@ resource "aws_security_group_rule" "allow_serf_udp_ingress" {
 
 resource "aws_instance" "this" {
 	ami = "ami-085cd86733cd29a21"
+	instance_type = "t3.micro"
 	key_name = "go-rsa"
 	tags = {
 		Name = "ad-stuff"
