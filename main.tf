@@ -24,3 +24,16 @@ resource "aws_directory_service_directory" "this" {
 data "vault_generic_secret" "this" {
 	path = "secrets/aws_active_directory"
 }
+
+
+
+module "ec2-instance" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "4.1.4"
+
+	ami = "ami-085cd86733cd29a21"
+
+	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
+}
+
+
