@@ -33,6 +33,7 @@ module "ec2-instance" {
 
 	ami = "ami-085cd86733cd29a21"
 	key_name = "go"
+	get_password_data = true
 
 	name = "ad_manager"
 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
