@@ -27,16 +27,16 @@ data "vault_generic_secret" "this" {
 
 
 
-# module "ec2-instance" {
-#   source  = "terraform-aws-modules/ec2-instance/aws"
-#   version = "4.1.4"
+module "ec2-instance" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "4.1.4"
 
-# 	ami = "ami-085cd86733cd29a21"
-# 	key_name = "go"
-# 	get_password_data = true
+	ami = "ami-085cd86733cd29a21"
+	key_name = "go-rsa"
+	get_password_data = true
 
-# 	name = "ad_manager"
-# 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
-# }
+	name = "ad_manager"
+	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
+}
 
 
