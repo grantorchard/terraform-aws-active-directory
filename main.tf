@@ -62,7 +62,7 @@ resource "aws_security_group" "egress" {
 resource "aws_security_group_rule" "permit_egress" {
   protocol          = "tcp"
   source_security_group_id = aws_security_group.egress.id
-	security_group_id = aws_security_group.egress.id
+	#security_group_id = aws_security_group.egress.id
   from_port         = 0
   to_port           = 0
   type              = "egress"
