@@ -14,7 +14,7 @@ data "terraform_remote_state" "aws-core" {
 }
 
 resource "aws_directory_service_directory" "this" {
-  name     = "go.local"
+  name     = "gcve.local"
   password = data.vault_generic_secret.this.data["password"]
   #edition  = "Standard"
   type     = "SimpleAD"
