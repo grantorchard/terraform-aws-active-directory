@@ -86,7 +86,8 @@ resource "aws_instance" "this" {
 	associate_public_ip_address = true
 	lifecycle {
 		ignore_changes = [
-			vpc_security_group_ids
+			vpc_security_group_ids,
+			security_groups
 		]
 	}
 }
