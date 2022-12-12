@@ -72,7 +72,7 @@ resource "aws_security_group_rule" "permit_egress" {
 }
 
 resource "aws_instance" "this" {
-	ami = "ami-085cd86733cd29a21"
+	ami = "ami-047d774cd780e511f"
 	instance_type = "t3.micro"
 	key_name = "go-rsa"
 	tags = {
