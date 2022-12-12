@@ -17,7 +17,7 @@ resource "aws_directory_service_directory" "this" {
   name     = "gcve.local"
   password = data.vault_generic_secret.this.data["password"]
   #edition  = "Standard"
-  type     = "SimpleAD"
+  type     = "MicrosoftAD"
 
   vpc_settings {
     vpc_id     = local.vpc_id
@@ -86,3 +86,4 @@ resource "aws_instance" "this" {
 	associate_public_ip_address = true
 }
 
+# vault write pki_int/intermediate/generate/internal common_name="vault.gcve.local Intermediate Authority" ttl=43800h
