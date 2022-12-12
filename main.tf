@@ -84,9 +84,9 @@ resource "aws_instance" "this" {
 		aws_security_group.egress.id
 	]
 	associate_public_ip_address = true
-	ignore_changes = [
-		vpc_security_group_ids
-	]
+	lifecycle {
+		ignore_changes = [
+			vpc_security_group_ids
+		]
+	}
 }
-
-# vault write pki_int/intermediate/generate/internal common_name="vault.gcve.local Intermediate Authority" ttl=43800h
