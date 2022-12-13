@@ -57,6 +57,18 @@ resource "aws_security_group_rule" "permit_rdp_ingress" {
   type              = "ingress"
 }
 
+resource "aws_security_group_rule" "permit_https_ingress" {
+  protocol          = "tcp"
+  security_group_id = aws_security_group.rdp_ingress.id
+	cidr_blocks       = [
+		"27.32.248.192/32",
+		"180.150.37.27/32"
+	]
+  from_port         = 443
+  to_port           = 443
+  type              = "ingress"
+}
+
 resource "aws_security_group" "egress" {
 	name        = "egress"
   vpc_id      = local.vpc_id
