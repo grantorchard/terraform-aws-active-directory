@@ -22,6 +22,7 @@ data "tfe_workspace" "self" {
 resource "aws_directory_service_directory" "this" {
   name     = "gcve.local"
   password = data.vault_generic_secret.this.data["password"]
+
   #edition  = "Standard"
   type     = "MicrosoftAD"
 
@@ -35,23 +36,23 @@ data "vault_generic_secret" "this" {
 	path = "secrets/${local.workspace_secret_path}/aws_active_directory"
 }
 
-# module "ec2-instance" {
-#   source  = "terraform-aws-modules/ec2-instance/aws"
-#   version = "4.1.4"
+module "ec2-instance" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "4.1.4"
 
-# 	ami = "ami-085cd86733cd29a21"
-# 	key_name = "go-rsa"
+	ami = "ami-085cd86733cd29a21"
+	key_name = "go-rsa"
 
-# 	name = "ad_manager"
-# 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
-# }
+	name = "ad_manager"
+	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
+}
 
 resource "aws_security_group" "rdp_ingress" {
 	name        = "ad_client_ingress"
   vpc_id      = local.vpc_id
 }
 
-resource "aws_security_group_rule" "permit_ad_client_ingress" {
+resource "aws_security_group_rule" "permit_rdp_ingress" {
   protocol          = "tcp"
   security_group_id = aws_security_group.rdp_ingress.id
 	cidr_blocks       = [
@@ -88,23 +89,23 @@ resource "aws_security_group_rule" "permit_ad_client_ingress" {
 #   type              = "egress"
 # }
 
-# resource "aws_instance" "this" {
-# 	ami = "ami-047d774cd780e511f"
-# 	instance_type = "t3.micro"
-# 	key_name = "go-rsa"
-# 	tags = {
-# 		Name = "ad-stuff"
-# 	}
-# 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
-# 	security_groups = [
-# 		aws_security_group.rdp_ingress.id,
-# 		aws_security_group.egress.id
-# 	]
-# 	associate_public_ip_address = true
-# 	lifecycle {
-# 		ignore_changes = [
-# 			vpc_security_group_ids,
-# 			security_groups
-# 		]
-# 	}
-# }
+resource "aws_instance" "this" {
+	ami = "ami-047d774cd780e511f"
+	instance_type = "t3.micro"
+	key_name = "go-rsa"
+	tags = {
+		Name = "ad-stuff"
+	}
+	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
+	security_groups = [
+		aws_security_group.rdp_ingress.id,
+		aws_security_group.egress.id
+	]
+	associate_public_ip_address = true
+	lifecycle {
+		ignore_changes = [
+			vpc_security_group_ids,
+			security_groups
+		]
+	}
+}
