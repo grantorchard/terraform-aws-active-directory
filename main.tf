@@ -90,7 +90,7 @@ resource "aws_security_group_rule" "permit_rdp_ingress" {
 # }
 
 resource "aws_instance" "this" {
-	ami = "ami-047d774cd780e511f"
+	ami = "ami-039965e18092d85cb"
 	instance_type = "t3.micro"
 	key_name = "go-rsa"
 	tags = {
