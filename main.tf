@@ -36,16 +36,16 @@ data "vault_generic_secret" "this" {
 	path = "secrets/${local.workspace_secret_path}/aws_active_directory"
 }
 
-module "ec2-instance" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "4.1.4"
+# module "ec2-instance" {
+#   source  = "terraform-aws-modules/ec2-instance/aws"
+#   version = "4.1.4"
 
-	ami = "ami-085cd86733cd29a21"
-	key_name = "go-rsa"
+# 	ami = "ami-085cd86733cd29a21"
+# 	key_name = "go-rsa"
 
-	name = "ad_manager"
-	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
-}
+# 	name = "ad_manager"
+# 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
+# }
 
 resource "aws_security_group" "rdp_ingress" {
 	name        = "ad_client_ingress"
@@ -75,23 +75,23 @@ resource "aws_security_group_rule" "permit_rdp_ingress" {
 #   type              = "ingress"
 # }
 
-# resource "aws_security_group" "egress" {
-# 	name        = "egress"
-#   vpc_id      = local.vpc_id
-# }
+resource "aws_security_group" "egress" {
+	name        = "egress"
+  vpc_id      = local.vpc_id
+}
 
-# resource "aws_security_group_rule" "permit_egress" {
-#   protocol          = "-1"
-#   cidr_blocks       = ["0.0.0.0/0"]
-# 	security_group_id = aws_security_group.egress.id
-#   from_port         = 0
-#   to_port           = 0
-#   type              = "egress"
-# }
+resource "aws_security_group_rule" "permit_egress" {
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+	security_group_id = aws_security_group.egress.id
+  from_port         = 0
+  to_port           = 0
+  type              = "egress"
+}
 
 resource "aws_instance" "this" {
 	ami = "ami-039965e18092d85cb"
-	instance_type = "t3.micro"
+	instance_type = "t3.small"
 	key_name = "go-rsa"
 	tags = {
 		Name = "ad-stuff"
@@ -99,6 +99,7 @@ resource "aws_instance" "this" {
 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
 	security_groups = [
 		aws_security_group.rdp_ingress.id,
+    aws_security_group.egress.id
 	]
 	associate_public_ip_address = true
 	lifecycle {
