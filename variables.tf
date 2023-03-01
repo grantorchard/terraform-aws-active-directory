@@ -21,3 +21,11 @@ variable "terraform" {
 variable "hc-internet-facing" {
 	type = bool
 }
+
+variable "tfc_organisation" {
+	type = string
+}
+
+variable "TFC_WORKSPACE_NAME" {
+	type = string
+}
