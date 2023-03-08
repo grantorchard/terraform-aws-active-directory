@@ -23,7 +23,6 @@ resource "aws_directory_service_directory" "this" {
   name     = "gcve.local"
   password = data.vault_generic_secret.this.data["password"]
 
-  #edition  = "Standard"
   type     = "MicrosoftAD"
 
   vpc_settings {
@@ -35,17 +34,6 @@ resource "aws_directory_service_directory" "this" {
 data "vault_generic_secret" "this" {
 	path = "secrets/${local.workspace_secret_path}/aws_active_directory"
 }
-
-# module "ec2-instance" {
-#   source  = "terraform-aws-modules/ec2-instance/aws"
-#   version = "4.1.4"
-
-# 	ami = "ami-085cd86733cd29a21"
-# 	key_name = "go-rsa"
-
-# 	name = "ad_manager"
-# 	subnet_id = data.terraform_remote_state.aws-core.outputs.public_subnets[0]
-# }
 
 resource "aws_security_group" "rdp_ingress" {
 	name        = "ad_client_ingress"
@@ -93,6 +81,7 @@ resource "aws_instance" "this" {
 	ami = "ami-039965e18092d85cb"
 	instance_type = "t3.small"
 	key_name = "go-rsa"
+  iam_instance_profile = aws_iam_instance_profile.this
 	tags = {
 		Name = "ad-stuff"
 	}
@@ -108,4 +97,9 @@ resource "aws_instance" "this" {
 			security_groups
 		]
 	}
+}
+
+resource "aws_iam_instance_profile" "this" {
+  name = "domain_join"
+  role = data.aws_iam_role.this
 }
