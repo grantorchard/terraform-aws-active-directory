@@ -101,5 +101,5 @@ resource "aws_instance" "this" {
 
 resource "aws_iam_instance_profile" "this" {
   name = "domain_join"
-  role = data.aws_iam_role.this
+  role = data.aws_iam_role.this.arn
 }
