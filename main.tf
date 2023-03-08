@@ -81,7 +81,7 @@ resource "aws_instance" "this" {
 	ami = "ami-039965e18092d85cb"
 	instance_type = "t3.small"
 	key_name = "go-rsa"
-  iam_instance_profile = aws_iam_instance_profile.this
+  iam_instance_profile = aws_iam_instance_profile.this.name
 	tags = {
 		Name = "ad-stuff"
 	}
