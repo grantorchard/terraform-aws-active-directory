@@ -81,7 +81,7 @@ resource "aws_instance" "this" {
 	ami = "ami-039965e18092d85cb"
 	instance_type = "t3.small"
 	key_name = "go-rsa"
-  iam_instance_profile = aws_iam_instance_profile.this.name
+  iam_instance_profile = "domain_join"
 	tags = {
 		Name = "ad-stuff"
 	}
@@ -97,9 +97,4 @@ resource "aws_instance" "this" {
 			security_groups
 		]
 	}
-}
-
-resource "aws_iam_instance_profile" "this" {
-  name = "domain_join"
-  role = data.aws_iam_role.this.arn
 }
